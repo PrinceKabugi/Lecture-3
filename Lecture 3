@@ -1,54 +1,126 @@
-class Vehicle:
-    def __init__(self, make, model, year):
-        self.make = make
-        self.model = model
-        self.year = year
+class Vehicle {
+    private String make;
+    private String model;
+    private int year;
 
-class Car(Vehicle):
-    def __init__(self, make, model, year, transmission):
-        super().__init__(make, model, year)
-        self.transmission = transmission
+    public Vehicle(String make, String model, int year) {
+        this.make = make;
+        this.model = model;
+        this.year = year;
+    }
 
-class Bike(Vehicle):
-    def __init__(self, make, model, year, type):
-        super().__init__(make, model, year)
-        self.type = type
+    public void start() {
+        System.out.println("Starting " + year + " " + make + " " + model);
+    }
 
-class Scooter(Vehicle):
-    def __init__(self, make, model, year, engine_size):
-        super().__init__(make, model, year)
-        self.engine_size = engine_size
+    public void stop() {
+        System.out.println("Stopping " + year + " " + make + " " + model);
+    }
+}
 
-class VehicleRentalService:
-    def rent_vehicle(self, vehicle_type, make, model, year, **kwargs):
-        if vehicle_type == 'car':
-            return self.rent_car(make, model, year, **kwargs)
-        elif vehicle_type == 'bike':
-            return self.rent_bike(make, model, year, **kwargs)
-        elif vehicle_type == 'scooter':
-            return self.rent_scooter(make, model, year, **kwargs)
-        else:
-            return None
+class Car extends Vehicle {
+    private String transmission;
 
-    def rent_car(self, make, model, year, transmission, rental_duration=1, insurance_included=False):
-        car = Car(make, model, year, transmission)
-        rental_cost = self.calculate_rental_cost(car, rental_duration, insurance_included)
-        return car, rental_cost
+    public Car(String make, String model, int year, String transmission) {
+        super(make, model, year);
+        this.transmission = transmission;
+    }
 
-    def rent_bike(self, make, model, year, type, rental_duration=1, insurance_included=False):
-        bike = Bike(make, model, year, type)
-        rental_cost = self.calculate_rental_cost(bike, rental_duration, insurance_included)
-        return bike, rental_cost
+    public void display() {
+        System.out.println(year + " " + make + " " + model + " - Transmission: " + transmission);
+    }
+}
 
-    def rent_scooter(self, make, model, year, engine_size, rental_duration=1, insurance_included=False):
-        scooter = Scooter(make, model, year, engine_size)
-        rental_cost = self.calculate_rental_cost(scooter, rental_duration, insurance_included)
-        return scooter, rental_cost
+class Bike extends Vehicle {
+    private String type;
 
-    def calculate_rental_cost(self, vehicle, rental_duration, insurance_included):
-        # Logic to calculate rental cost based on vehicle type, duration, and insurance
-        # This is a placeholder implementation
-        base_cost = 50  # Base cost for one day rental
-        if insurance_included:
-            base_cost += 20  # Additional cost for insurance
-        return base_cost * rental_duration
+    public Bike(String make, String model, int year, String type) {
+        super(make, model, year);
+        this.type = type;
+    }
+
+    public void display() {
+        System.out.println(year + " " + make + " " + model + " - Type: " + type);
+    }
+}
+
+class Scooter extends Vehicle {
+    private String engineSize;
+
+    public Scooter(String make, String model, int year, String engineSize) {
+        super(make, model, year);
+        this.engineSize = engineSize;
+    }
+
+    public void display() {
+        System.out.println(year + " " + make + " " + model + " - Engine Size: " + engineSize);
+    }
+}
+
+class VehicleRentalService {
+    public void rentVehicle(String vehicleType, String make, String model, int year, int rentalDuration, boolean insuranceIncluded) {
+        if (vehicleType.equals("car")) {
+            rentCar(make, model, year, rentalDuration, insuranceIncluded);
+        } else if (vehicleType.equals("bike")) {
+            rentBike(make, model, year, rentalDuration, insuranceIncluded);
+        } else if (vehicleType.equals("scooter")) {
+            rentScooter(make, model, year, rentalDuration, insuranceIncluded);
+        } else {
+            System.out.println("Invalid vehicle type.");
+        }
+    }
+
+    private void rentCar(String make, String model, int year, int rentalDuration, boolean insuranceIncluded) {
+        Car car = new Car(make, model, year, "Automatic");
+        car.start();
+        car.display();
+        System.out.println("Renting for " + rentalDuration + " days.");
+        if (insuranceIncluded) {
+            System.out.println("Insurance included.");
+        } else {
+            System.out.println("Insurance not included.");
+        }
+        car.stop();
+    }
+
+    private void rentBike(String make, String model, int year, int rentalDuration, boolean insuranceIncluded) {
+        Bike bike = new Bike(make, model, year, "Cruiser");
+        bike.start();
+        bike.display();
+        System.out.println("Renting for " + rentalDuration + " days.");
+        if (insuranceIncluded) {
+            System.out.println("Insurance included.");
+        } else {
+            System.out.println("Insurance not included.");
+        }
+        bike.stop();
+    }
+
+    private void rentScooter(String make, String model, int year, int rentalDuration, boolean insuranceIncluded) {
+        Scooter scooter = new Scooter(make, model, year, "125cc");
+        scooter.start();
+        scooter.display();
+        System.out.println("Renting for " + rentalDuration + " days.");
+        if (insuranceIncluded) {
+            System.out.println("Insurance included.");
+        } else {
+            System.out.println("Insurance not included.");
+        }
+        scooter.stop();
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        VehicleRentalService rentalService = new VehicleRentalService();
+
+        // Rent a car for 5 days with insurance
+        rentalService.rentVehicle("car", "Toyota", "Camry", 2020, 5, true);
+
+        // Rent a bike for 3 days without insurance
+        rentalService.rentVehicle("bike", "Harley-Davidson", "Sportster", 2021, 3, false);
+
+        // Rent a scooter for 7 days with insurance
+        rentalService.rentVehicle("scooter", "Honda", "Activa", 2019, 7, true);
+    }
+}
