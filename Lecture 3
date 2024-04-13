@@ -1,0 +1,54 @@
+class Vehicle:
+    def __init__(self, make, model, year):
+        self.make = make
+        self.model = model
+        self.year = year
+
+class Car(Vehicle):
+    def __init__(self, make, model, year, transmission):
+        super().__init__(make, model, year)
+        self.transmission = transmission
+
+class Bike(Vehicle):
+    def __init__(self, make, model, year, type):
+        super().__init__(make, model, year)
+        self.type = type
+
+class Scooter(Vehicle):
+    def __init__(self, make, model, year, engine_size):
+        super().__init__(make, model, year)
+        self.engine_size = engine_size
+
+class VehicleRentalService:
+    def rent_vehicle(self, vehicle_type, make, model, year, **kwargs):
+        if vehicle_type == 'car':
+            return self.rent_car(make, model, year, **kwargs)
+        elif vehicle_type == 'bike':
+            return self.rent_bike(make, model, year, **kwargs)
+        elif vehicle_type == 'scooter':
+            return self.rent_scooter(make, model, year, **kwargs)
+        else:
+            return None
+
+    def rent_car(self, make, model, year, transmission, rental_duration=1, insurance_included=False):
+        car = Car(make, model, year, transmission)
+        rental_cost = self.calculate_rental_cost(car, rental_duration, insurance_included)
+        return car, rental_cost
+
+    def rent_bike(self, make, model, year, type, rental_duration=1, insurance_included=False):
+        bike = Bike(make, model, year, type)
+        rental_cost = self.calculate_rental_cost(bike, rental_duration, insurance_included)
+        return bike, rental_cost
+
+    def rent_scooter(self, make, model, year, engine_size, rental_duration=1, insurance_included=False):
+        scooter = Scooter(make, model, year, engine_size)
+        rental_cost = self.calculate_rental_cost(scooter, rental_duration, insurance_included)
+        return scooter, rental_cost
+
+    def calculate_rental_cost(self, vehicle, rental_duration, insurance_included):
+        # Logic to calculate rental cost based on vehicle type, duration, and insurance
+        # This is a placeholder implementation
+        base_cost = 50  # Base cost for one day rental
+        if insurance_included:
+            base_cost += 20  # Additional cost for insurance
+        return base_cost * rental_duration
